@@ -37,7 +37,7 @@ const MobileSidebar = () => {
     <>
       <Button
         onClick={onOpen}
-        className="block md:hidden"
+        className="block md:hidden mr-3"
         variant="ghost"
         size="sm"
       >

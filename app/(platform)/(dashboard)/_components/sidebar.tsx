@@ -61,9 +61,22 @@ const Sidebar = ({ storageKey }: SidebarProps) => {
       [id]: !expanded[id],
     }));
   };
+
   //loading ui
   if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
-    return <Skeleton />;
+    return (
+      <>
+        <div className="flex items-center justify-between mb-2">
+          <Skeleton className="h-10 w-[50%]" />
+          <Skeleton className="w-10 h-10 " />
+        </div>
+        <div className="space-y-16">
+          {[...Array(3)].map((_, i) => (
+            <NavItem.Skeleton key={i} />
+          ))}
+        </div>
+      </>
+    );
   }
   return (
     <>
@@ -187,6 +200,17 @@ const NavItem = ({
         })}
       </AccordionContent>
     </AccordionItem>
+  );
+};
+//;oading skeleton for nav item components
+NavItem.Skeleton = function SkeletonItem() {
+  return (
+    <div className="flex items-center gap-x-2">
+      <div className="w-10 h-10 relative shrink-0">
+        <Skeleton className="h-full w-full absolute" />
+      </div>
+      <Skeleton className="h-10 w-full" />
+    </div>
   );
 };
 
