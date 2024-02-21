@@ -1,15 +1,17 @@
 //import { OrganizationSwitcher, auth } from "@clerk/nextjs";
-import { countries } from "@/schema";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+
+import { board } from "@/lib/schema";
+import { db } from "@/lib/db";
+import Form from "./form";
+
 export default async function Page() {
-  //const { userId, orgId } = auth();
-  const sql = neon(process.env.DATABASE_URL!);
-  const db = drizzle(sql);
-  const data = await db.select().from(countries);
+  const boards = await db.select().from(board);
   return (
-    <div className=" border-2 border-red-500 border-solid  hidden h-4 w-4">
-      Org page
+    <div className="flex flex-col space-y-4">
+      <Form />
+      {boards.map((board) => (
+        <div key={board.id}>{board.title}</div>
+      ))}
     </div>
   );
 }

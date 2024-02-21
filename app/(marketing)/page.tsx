@@ -1,9 +1,6 @@
 import { Medal } from "lucide-react";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
-export default async function Page() {
+export default function Page() {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex items-center justify-center flex-col">

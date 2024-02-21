@@ -1,6 +1,6 @@
 {
-  "id": "ed3b0c7a-1f34-4372-9372-d323ce00bd58",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "74cae0be-e9c9-49fb-a5be-cda9ca56861f",
+  "prevId": "ed3b0c7a-1f34-4372-9372-d323ce00bd58",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -19,28 +19,6 @@
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "countries": {
-      "name": "countries",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
