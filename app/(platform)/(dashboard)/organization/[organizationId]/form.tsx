@@ -5,12 +5,7 @@ import FormInput from "@/components/form/form-input";
 import FormButton from "@/components/form/form-button";
 import { useAction } from "@/hooks/use-action";
 const Form = () => {
-  const { exec, fieldErrors } = useAction(createBoard, {
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (err) => console.error(err),
-  });
+  const { exec, fieldErrors } = useAction(createBoard);
   const onSubmit = (formData: FormData) => {
     const title = formData.get("title") as string;
     exec({ title });
