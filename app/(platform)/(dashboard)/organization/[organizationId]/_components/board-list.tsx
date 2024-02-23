@@ -10,7 +10,7 @@ interface BoardListProps {
 const BoardList = ({ boards }: { boards: BoardListProps[] }) => {
   return (
     <div className="space-y-4">
-      <div className=" flex items-center font-semibold text-neutral-800  text-lg">
+      <div className=" flex items-center font-semibold text-neutral-900  text-lg">
         <User2 className="mr-2 h-6 w-6" />
         Your Boards
       </div>

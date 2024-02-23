@@ -72,4 +72,4 @@ const FormInput = forwardRef<HTMLInputElement, InputProps>(
 
 FormInput.displayName = "FormInput";
 
-export default FormInput;
+export { FormInput };

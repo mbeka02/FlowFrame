@@ -21,7 +21,7 @@ interface FormSubmitProps {
     | undefined;
 }
 
-const FormButton = ({
+export const FormButton = ({
   children,
   disabled,
   className,
@@ -41,4 +41,3 @@ const FormButton = ({
     </Button>
   );
 };
-export default FormButton;
