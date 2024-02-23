@@ -1,5 +1,6 @@
 import { HelpCircle, User2 } from "lucide-react";
 import Hint from "@/components/hint";
+import FormPopover from "@/components/form/form-popover";
 
 interface BoardListProps {
   id: number;
@@ -14,19 +15,21 @@ const BoardList = ({ boards }: { boards: BoardListProps[] }) => {
         Your Boards
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <div
-          className=" aspect-video rounded-sm  relative h-full w-full bg-muted flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition "
-          role="button"
-        >
-          <p className="text-sm">Create New Board</p>
-          <span className="text-sm">8 Remaining</span>
-          <Hint
-            sideOffset={40}
-            description={`Free workspaces can have upto 8 free boards , upgrade your workspace for unlimited boards`}
+        <FormPopover sideOffset={10} side="right">
+          <div
+            className=" aspect-video rounded-sm  relative h-full w-full bg-muted flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition "
+            role="button"
           >
-            <HelpCircle className="absolute bottom-2 right-2 h-[14px] w-[14px]" />
-          </Hint>
-        </div>
+            <p className="text-sm">Create New Board</p>
+            <span className="text-sm  text-neutral-500">8 Remaining</span>
+            <Hint
+              sideOffset={40}
+              description={`Free workspaces can have upto 8 free boards , upgrade your workspace for unlimited boards`}
+            >
+              <HelpCircle className="absolute bottom-2 right-2 h-[14px] w-[14px]" />
+            </Hint>
+          </div>
+        </FormPopover>
         {/*boards.map((board) => {
           return <div key={board.id}>{board.title}</div>;
         })*/}
