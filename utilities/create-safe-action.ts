@@ -12,11 +12,10 @@ export type ActionState<TInput, TOutput> = {
   error?: string | null;
   data?: TOutput;
 };
-/*  A wrapper fn for any form action it takes two parameters:
+/* A wrapper fn for any form action it takes two parameters:
  schema: A Zod schema used for validating input data. 
  handler: A function that takes validated input data and returns a promise of ActionState 
  representing the result of the action.
-
 */
 export const createSafeAction = <TInput, TOutput>(
   schema: z.Schema,

@@ -1,17 +1,17 @@
-//import { OrganizationSwitcher, auth } from "@clerk/nextjs";
-
 import { board } from "@/lib/schema";
 import { db } from "@/lib/db";
-import Form from "./form";
-
+import Info from "./_components/info";
+import BoardList from "./_components/board-list";
+import { Separator } from "@/components/ui/separator";
 export default async function Page() {
   const boards = await db.select().from(board);
   return (
-    <div className="flex flex-col space-y-4">
-      <Form />
-      {boards.map((board) => (
-        <div key={board.id}>{board.title}</div>
-      ))}
+    <div className="w-full mb-20">
+      <Info />
+      <Separator className="my-4" />
+      <div className="px-2  md:px-4">
+        <BoardList boards={boards} />
+      </div>
     </div>
   );
 }
