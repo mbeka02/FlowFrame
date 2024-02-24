@@ -7,19 +7,43 @@ import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/utilities/create-safe-action";
 import { CreateBoardSchema } from "./zod-schema";
 const handler = async (inputData: InputType): Promise<ReturnType> => {
-  //check if user is authed
-  const { userId } = auth();
-
-  if (!userId) {
+  const { userId, orgId } = auth();
+  //auth
+  if (!userId || !orgId) {
     return {
       error: "unauthorized",
     };
   }
-  const { title } = inputData;
+  const { title, image } = inputData;
+  const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName] =
+    image.split("|");
+
+  if (
+    !imageId ||
+    !imageThumbUrl ||
+    !imageFullUrl ||
+    !imageLinkHTML ||
+    !imageUserName
+  ) {
+    return {
+      error: "Unable to create the board due to missing image details",
+    };
+  }
 
   let newBoard;
   try {
-    newBoard = await db.insert(board).values({ title: title }).returning();
+    newBoard = await db
+      .insert(board)
+      .values({
+        title: title,
+        orgId: orgId,
+        imageId: imageId,
+        imageThumbUrl: imageThumbUrl,
+        imageFullUrl: imageFullUrl,
+        imageLinkHTML: imageLinkHTML,
+        imageUserName: imageUserName,
+      })
+      .returning();
   } catch (error) {
     return {
       error: "something went wrong , unable to create the Board",

@@ -5,6 +5,14 @@ import FormPopover from "@/components/form/form-popover";
 interface BoardListProps {
   id: number;
   title: string;
+  orgId: string;
+  imageId: string;
+  imageThumbUrl: string;
+  imageFullUrl: string;
+  imageUserName: string;
+  imageLinkHTML: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 }
 
 const BoardList = ({ boards }: { boards: BoardListProps[] }) => {

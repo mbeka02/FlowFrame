@@ -15,6 +15,20 @@
       "when": 1708506528143,
       "tag": "0001_optimal_deathbird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1708773364222,
+      "tag": "0002_special_hulk",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1708773886716,
+      "tag": "0003_cultured_freak",
+      "breakpoints": true
     }
   ]
 }

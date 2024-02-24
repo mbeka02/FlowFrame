@@ -6,10 +6,13 @@ interface FormPickerProps {
 }
 import { cn } from "@/lib/utils";
 import { unsplashApi } from "@/utilities/unsplash";
-import { Loader2 } from "lucide-react";
+import { fallbackImages } from "@/constants/image-fallback";
+import { Check, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
+import Link from "next/link";
+import FormErrors from "./form-errors";
 
 export const FormPicker = ({ id, errors }: FormPickerProps) => {
   const [images, setImages] = useState<Array<Record<string, any>>>([]);
@@ -19,6 +22,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
+        throw new Error("random");
         const res = await unsplashApi.photos.getRandom({
           collectionIds: ["317099"],
           count: 9,
@@ -31,7 +35,8 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
         }
       } catch (error) {
         console.log(error);
-        setImages([]);
+        //use fallback in case rate limit has been exceeded or if any other random error occurs
+        setImages(fallbackImages);
       } finally {
         setLoading(false);
       }
@@ -62,16 +67,41 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
                 setSelectedImageId(image.id);
               }}
             >
+              <input
+                type="radio"
+                id={id}
+                name={id}
+                className="hidden"
+                readOnly
+                checked={selectedImageId === image.id}
+                disabled={pending}
+                //server action splits the value to each individual element using |
+                value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
+              />
               <Image
                 fill
                 src={image.urls.thumb}
                 alt="Unsplash image"
                 className="object-cover rounded-sm"
               />
+              {selectedImageId === image.id && (
+                <div className="absolute inset-y-0 h-full w-full bg-black/30 flex items-center justify-center">
+                  <Check className=" h-4 w-4 text-white" />
+                </div>
+              )}
+              <Link
+                href={image.links.html}
+                target="_blank"
+                className="
+              opacity-0 group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white bg-black/50 p-1 hover:underline"
+              >
+                {image.user.name}
+              </Link>
             </div>
           );
         })}
       </div>
+      <FormErrors id="image" errors={errors} />
     </div>
   );
 };

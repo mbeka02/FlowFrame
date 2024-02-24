@@ -9,4 +9,8 @@ export const CreateBoardSchema = z.object({
     .min(2, {
       message: "Minimum length of 2 characters is required",
     }),
+  image: z.string({
+    required_error: "An image is required",
+    invalid_type_error: "An image is required",
+  }),
 });

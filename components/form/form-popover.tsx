@@ -13,6 +13,8 @@ import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { toast } from "sonner";
 import { FormPicker } from "./form-picker";
+import { ElementRef, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 interface FormPopoverProps {
   align?: "start" | "center" | "end";
@@ -27,19 +29,24 @@ const FormPopover = ({
   side = "bottom",
   sideOffset,
 }: FormPopoverProps) => {
+  const router = useRouter();
+  const closeRef = useRef<ElementRef<"button">>(null);
   const { exec, fieldErrors } = useAction(createBoard, {
     onError: (err) => {
-      console.log(err);
       //The error returned to the client is a string so this is safe to use.
       toast.error(err);
     },
     onSuccess: (data) => {
       toast.success("Board created");
+      closeRef.current?.click();
+      router.push(`/board/${data.id}`);
     },
   });
+
   const handleSubmit = (formData: FormData) => {
     const title = formData.get("title") as string;
-    exec({ title });
+    const image = formData.get("image") as string;
+    exec({ title, image });
   };
 
   return (
@@ -51,14 +58,14 @@ const FormPopover = ({
         sideOffset={sideOffset}
         className="w-80 pt-3"
       >
-        <div className="text-center text-sm text-neutral-600  ">
+        <div className="flex items-center justify-center pb-3 text-sm text-neutral-800  ">
           Create board
         </div>
-        <PopOverClose asChild>
+        <PopOverClose asChild ref={closeRef}>
           <Button
             size="sm"
             variant="ghost"
-            className=" h-auto w-auto  focus-visible:ring-0 focus-visible:ring-offset-0 p-2 absolute  top-2 right-2  text-neutral-500 hover:text-white hover:bg-rose-500  rounded-full "
+            className=" h-auto w-auto  focus-visible:ring-0 focus-visible:ring-offset-0 p-2 absolute  top-1 right-2  text-neutral-800  hover:text-rose-500  rounded-full "
           >
             <X className="h-4 w-4" />
           </Button>
@@ -72,7 +79,9 @@ const FormPopover = ({
             type="text"
             errors={fieldErrors}
           />
-          <FormButton className="w-full">Create</FormButton>
+          <FormButton className="w-full" variant="amber">
+            Create
+          </FormButton>
         </form>
       </PopoverContent>
     </Popover>
