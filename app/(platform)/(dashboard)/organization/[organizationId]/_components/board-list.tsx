@@ -1,21 +1,24 @@
 import { HelpCircle, User2 } from "lucide-react";
 import Hint from "@/components/hint";
 import FormPopover from "@/components/form/form-popover";
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { board } from "@/lib/schema";
+import { db } from "@/lib/db";
+import { desc, eq } from "drizzle-orm";
+import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface BoardListProps {
-  id: number;
-  title: string;
-  orgId: string;
-  imageId: string;
-  imageThumbUrl: string;
-  imageFullUrl: string;
-  imageUserName: string;
-  imageLinkHTML: string;
-  createdAt: Date | null;
-  updatedAt: Date | null;
-}
-
-const BoardList = ({ boards }: { boards: BoardListProps[] }) => {
+const BoardList = async () => {
+  const { orgId } = auth();
+  if (!orgId) {
+    redirect("/select-org");
+  }
+  const boards = await db
+    .select()
+    .from(board)
+    .where(eq(board.orgId, orgId))
+    .orderBy(desc(board.createdAt));
   return (
     <div className="space-y-4">
       <div className=" flex items-center font-semibold text-neutral-900  text-lg">
@@ -38,10 +41,32 @@ const BoardList = ({ boards }: { boards: BoardListProps[] }) => {
             </Hint>
           </div>
         </FormPopover>
-        {/*boards.map((board) => {
-          return <div key={board.id}>{board.title}</div>;
-        })*/}
+        {boards.map((board) => {
+          return (
+            <Link
+              href={`/board/${board.id}`}
+              key={board.id}
+              style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
+              className="group relative aspect-video bg-center bg-cover bg-no-repeat bg-amber-600 rounded-sm h-full w-full p-2 overflow-hidden"
+            >
+              <div className="abolute inset-0 bg-black/30 group-hover:bg-black/40 transition" />
+              <p className="relative  font-semibold text-white">
+                {board.title}
+              </p>
+            </Link>
+          );
+        })}
       </div>
+    </div>
+  );
+};
+
+BoardList.Skeleton = function SkeletonBoardList() {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      {[...Array(8)].map((_, i) => (
+        <Skeleton key={i} className="aspect-video h-full w-full p-2" />
+      ))}
     </div>
   );
 };
