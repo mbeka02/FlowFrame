@@ -1,7 +1,10 @@
-import { pgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
-//imageThumbUrl is really long so it's safer to use text
+import { sql } from "drizzle-orm";
+import { pgTable, uuid, text, timestamp, varchar } from "drizzle-orm/pg-core";
+
 export const board = pgTable("board", {
-  id: serial("id").primaryKey(),
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   title: varchar("title", { length: 256 }).notNull(),
   orgId: varchar("orgId", { length: 256 }).notNull(),
   imageId: varchar("image_id", { length: 256 }).notNull(),

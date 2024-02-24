@@ -5,29 +5,15 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1708506506464,
-      "tag": "0000_fresh_swordsman",
+      "when": 1708790406204,
+      "tag": "0000_jittery_power_pack",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "5",
-      "when": 1708506528143,
-      "tag": "0001_optimal_deathbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1708773364222,
-      "tag": "0002_special_hulk",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1708773886716,
-      "tag": "0003_cultured_freak",
+      "when": 1708790700806,
+      "tag": "0001_busy_silhouette",
       "breakpoints": true
     }
   ]

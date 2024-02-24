@@ -1,6 +1,6 @@
 {
-  "id": "74cae0be-e9c9-49fb-a5be-cda9ca56861f",
-  "prevId": "ed3b0c7a-1f34-4372-9372-d323ce00bd58",
+  "id": "a8f24fc7-0caa-408a-9623-1dc40bb9efaf",
+  "prevId": "44680fdc-b537-4274-b412-b216f63447fc",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -10,15 +10,66 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "title": {
           "name": "title",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true
+        },
+        "orgId": {
+          "name": "orgId",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_thumb_url": {
+          "name": "image_thumb_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_full_url": {
+          "name": "image_full_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_user_name": {
+          "name": "image_user_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_link_html": {
+          "name": "image_link_html",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},

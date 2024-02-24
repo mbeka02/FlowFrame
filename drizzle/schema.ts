@@ -1,10 +1,10 @@
-import { pgTable, serial, varchar, text, timestamp } from "drizzle-orm/pg-core"
+import { pgTable, uuid, varchar, text, timestamp } from "drizzle-orm/pg-core"
   import { sql } from "drizzle-orm"
 
 
 
 export const board = pgTable("board", {
-	id: serial("id").primaryKey().notNull(),
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
 	title: varchar("title", { length: 256 }).notNull(),
 	orgId: varchar("orgId", { length: 256 }).notNull(),
 	imageId: varchar("image_id", { length: 256 }).notNull(),
