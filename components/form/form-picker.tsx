@@ -12,7 +12,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
-import FormErrors from "./form-errors";
+import { FormErrors } from "./form-errors";
 
 export const FormPicker = ({ id, errors }: FormPickerProps) => {
   const [images, setImages] = useState<Array<Record<string, any>>>([]);

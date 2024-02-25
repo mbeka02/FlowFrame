@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import FormErrors from "./form-errors";
+import { FormErrors } from "./form-errors";
 import { forwardRef } from "react";
 import { useFormStatus } from "react-dom";
 import { Label } from "../ui/label";

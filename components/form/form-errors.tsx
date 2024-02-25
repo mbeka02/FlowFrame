@@ -29,4 +29,4 @@ const FormErrors = ({ id, errors }: FormErrorProps) => {
   );
 };
 
-export default FormErrors;
+export { FormErrors };
