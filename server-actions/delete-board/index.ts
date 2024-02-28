@@ -18,12 +18,9 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
     };
   }
   const { id } = inputData;
-  let deletedBoard;
+
   try {
-    deletedBoard = await db
-      .delete(board)
-      .where(and(eq(board.id, id), eq(board.orgId, orgId)))
-      .returning();
+    await db.delete(board).where(and(eq(board.id, id), eq(board.orgId, orgId)));
   } catch (error) {
     return {
       error: "Something went wrong unable to delete the board ",

@@ -1,7 +1,25 @@
-import { pgTable, uuid, varchar, text, timestamp } from "drizzle-orm/pg-core"
+import { pgTable, foreignKey, uuid, varchar, integer, timestamp, text } from "drizzle-orm/pg-core"
   import { sql } from "drizzle-orm"
 
 
+
+export const list = pgTable("list", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	title: varchar("title", { length: 256 }).notNull(),
+	order: integer("order").notNull(),
+	boardId: uuid("board_id").notNull().references(() => board.id, { onDelete: "cascade" } ),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
+});
+
+export const card = pgTable("card", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	title: varchar("title", { length: 256 }).notNull(),
+	description: text("description"),
+	listId: uuid("list_id").notNull().references(() => list.id, { onDelete: "cascade" } ),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
+});
 
 export const board = pgTable("board", {
 	id: uuid("id").defaultRandom().primaryKey().notNull(),

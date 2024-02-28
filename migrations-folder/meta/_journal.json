@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1708790406204,
-      "tag": "0000_jittery_power_pack",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1708790700806,
-      "tag": "0001_busy_silhouette",
+      "when": 1709125912826,
+      "tag": "0000_smooth_beast",
       "breakpoints": true
     }
   ]
