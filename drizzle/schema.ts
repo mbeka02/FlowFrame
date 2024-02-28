@@ -6,17 +6,8 @@ import { pgTable, foreignKey, uuid, varchar, integer, timestamp, text } from "dr
 export const list = pgTable("list", {
 	id: uuid("id").defaultRandom().primaryKey().notNull(),
 	title: varchar("title", { length: 256 }).notNull(),
-	order: integer("order").notNull(),
+	position: integer("position").notNull(),
 	boardId: uuid("board_id").notNull().references(() => board.id, { onDelete: "cascade" } ),
-	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
-	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
-});
-
-export const card = pgTable("card", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	title: varchar("title", { length: 256 }).notNull(),
-	description: text("description"),
-	listId: uuid("list_id").notNull().references(() => list.id, { onDelete: "cascade" } ),
 	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
 	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
 });
@@ -32,4 +23,14 @@ export const board = pgTable("board", {
 	imageLinkHtml: text("image_link_html").notNull(),
 	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
 	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
+});
+
+export const card = pgTable("card", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	title: varchar("title", { length: 256 }).notNull(),
+	description: text("description"),
+	listId: uuid("list_id").notNull().references(() => list.id, { onDelete: "cascade" } ),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
+	position: integer("position").notNull(),
 });

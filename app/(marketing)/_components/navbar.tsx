@@ -8,10 +8,10 @@ const Navbar = () => {
       <div className="md:max-w-screen-2xl mx-auto flex items-center w-full justify-between">
         <Logo />
         <div className="space-x-4 md:block md:w-auto flex items-center">
-          <Button size="sm">
+          <Button size="sm" variant="amber">
             <Link href="/sign-up">Sign Up</Link>
           </Button>
-          <Button size="sm">
+          <Button size="sm" variant="amber">
             <Link href="/sign-in"> Login </Link>
           </Button>
         </div>

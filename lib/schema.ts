@@ -28,7 +28,7 @@ export const list = pgTable("list", {
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   title: varchar("title", { length: 256 }).notNull(),
-  order: integer("order").notNull(),
+  position: integer("position").notNull(),
   boardId: uuid("board_id")
     .references(() => board.id, { onDelete: "cascade" })
     .notNull(),
@@ -41,6 +41,7 @@ export const card = pgTable("card", {
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   title: varchar("title", { length: 256 }).notNull(),
+  position: integer("position").notNull(),
   description: text("description"),
   listId: uuid("list_id")
     .references(() => list.id, { onDelete: "cascade" })
@@ -48,5 +49,30 @@ export const card = pgTable("card", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+export const boardToListRelations = relations(board, ({ many }) => ({
+  list: many(list),
+}));
 
+export const listToBoardRelations = relations(list, ({ one, many }) => ({
+  board: one(board, {
+    fields: [list.boardId],
+    references: [board.id],
+  }),
+  card: many(card),
+}));
+export const listToCardRelations = relations(list, ({ many }) => ({
+  card: many(card),
+}));
+
+export const cardToListRelations = relations(card, ({ one }) => ({
+  list: one(list, {
+    fields: [card.listId],
+    references: [list.id],
+  }),
+}));
+// TO DO : refactor this
 export type NewBoard = typeof board.$inferSelect;
+export type NewList = typeof list.$inferSelect;
+export type NewCard = typeof card.$inferSelect;
+
+export type ListWithCards = NewList & { card: NewCard[] };
