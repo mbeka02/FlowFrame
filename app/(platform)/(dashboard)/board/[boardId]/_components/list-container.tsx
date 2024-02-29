@@ -7,7 +7,6 @@ interface ListContainerProps {
 }
 
 export const ListContainer = ({ boardId, data }: ListContainerProps) => {
-  console.log(data);
   return (
     <div>
       <ol>
