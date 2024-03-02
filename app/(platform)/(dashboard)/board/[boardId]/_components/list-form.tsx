@@ -11,15 +11,19 @@ import { useAction } from "@/hooks/use-action";
 import { Button } from "@/components/ui/button";
 import { createList } from "@/server-actions/create-list";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const ListForm = ({ boardId }: { boardId: string }) => {
   const [isEditing, setIsEditing] = useState(false);
   const formRef = useRef<ElementRef<"form">>(null);
   const inputRef = useRef<ElementRef<"input">>(null);
   const { pending } = useFormStatus();
+  const router = useRouter();
   const { exec, fieldErrors } = useAction(createList, {
     onSuccess(data) {
       toast.success("list created");
+      disableEditing();
+      router.refresh();
     },
     onError(error) {
       toast.error(error);
@@ -53,7 +57,7 @@ export const ListForm = ({ boardId }: { boardId: string }) => {
     return (
       <ListWrapper>
         <form
-          className="w-full p-3 rounded-md bg-white space-y-4 shadow-md"
+          className="w-full p-3 rounded-md bg-white space-y-4 shadow-md  relative"
           ref={formRef}
           action={handleSubmit}
         >
@@ -67,7 +71,7 @@ export const ListForm = ({ boardId }: { boardId: string }) => {
             errors={fieldErrors}
           />
           <input className="hidden" value={boardId} name="boardId" />
-          <div className="flex items-center gap-x-1 relative">
+          <div className="flex items-center gap-x-1">
             <FormButton variant="amber">add</FormButton>
             <Button
               onClick={disableEditing}

@@ -17,6 +17,7 @@ export default async function Page({
 
   const lists = await db.query.list.findMany({
     where: eq(list.boardId, params.boardId),
+
     with: {
       card: true,
     },

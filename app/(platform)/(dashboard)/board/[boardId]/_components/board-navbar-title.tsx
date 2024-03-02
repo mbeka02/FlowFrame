@@ -3,7 +3,7 @@ import { NewBoard } from "@/lib/schema";
 import { Button } from "@/components/ui/button";
 import { ElementRef, useRef, useState } from "react";
 import { FormInput } from "@/components/form/form-input";
-import { FormButton } from "@/components/form/form-button";
+
 import { useAction } from "@/hooks/use-action";
 import { updateBoard } from "@/server-actions/update-board";
 import { toast } from "sonner";

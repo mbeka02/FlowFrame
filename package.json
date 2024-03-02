@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "trace": "cross-env NODE_OPTIONS=--trace-deprecation next build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -24,6 +25,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.29.3",
     "lodash": "^4.17.21",
