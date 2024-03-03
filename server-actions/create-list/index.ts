@@ -38,12 +38,12 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       where: eq(list.boardId, field1),
       orderBy: [desc(list.position)],
     });
-    const newPostion = lastList ? lastList.position + 1 : 1;
+    const newPosition = lastList ? lastList.position + 1 : 1;
     newList = await db
       .insert(list)
       .values({
         title: title,
-        position: newPostion,
+        position: newPosition,
         boardId: boardId,
       })
       .returning();

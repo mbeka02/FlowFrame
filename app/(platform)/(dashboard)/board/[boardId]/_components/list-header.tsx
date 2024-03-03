@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, ElementRef } from "react";
+import { useState, useRef, ElementRef } from "react";
 import { FormInput } from "@/components/form/form-input";
 import { useAction } from "@/hooks/use-action";
 import { updateList } from "@/server-actions/update-list";

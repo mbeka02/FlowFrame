@@ -11,7 +11,10 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, X } from "lucide-react";
 import { useAction } from "@/hooks/use-action";
 import { deleteList } from "@/server-actions/delete-list";
+import { copyList } from "@/server-actions/copy-list";
 import { toast } from "sonner";
+import { Separator } from "@/components/ui/separator";
+import { FormButton } from "@/components/form/form-button";
 
 interface ListOptionsProps {
   onAddCard: () => void;
@@ -19,14 +22,24 @@ interface ListOptionsProps {
 }
 export const ListOptions = ({ val, onAddCard }: ListOptionsProps) => {
   const closeRef = useRef<ElementRef<"button">>(null);
-  const { exec, isLoading } = useAction(deleteList, {
+  const { exec: execDelete, isLoading } = useAction(deleteList, {
     onError(error) {
       toast.error(error);
     },
   });
 
+  const { exec: execCopy } = useAction(copyList, {
+    onSuccess(data) {
+      console.log(data);
+    },
+  });
+
   const handleDelete = () => {
-    exec({ id: val.id, boardId: val.boardId });
+    execDelete({ id: val.id, boardId: val.boardId });
+  };
+
+  const handleCopy = () => {
+    execCopy({ id: val.id, boardId: val.boardId });
   };
 
   return (
@@ -59,6 +72,18 @@ export const ListOptions = ({ val, onAddCard }: ListOptionsProps) => {
         >
           Add card...
         </Button>
+        <Separator />
+        <form action={handleCopy}>
+          <input className="hidden" defaultValue={val.boardId} name="boardId" />
+          <input className="hidden" defaultValue={val.id} name="id" />
+          <FormButton
+            variant="ghost"
+            className="w-full h-auto rounded-none p-2 px-5 justify-start font-normal text-sm "
+          >
+            Copy this list...
+          </FormButton>
+        </form>
+        <Separator />
         <Button
           variant="ghost"
           onClick={handleDelete}
