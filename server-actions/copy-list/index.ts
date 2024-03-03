@@ -7,8 +7,12 @@ import { eq, and, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { CopyListSchema } from "./zod-schema";
 import { card, list } from "@/lib/schema";
-
+import { drizzle } from "drizzle-orm/neon-serverless";
+import { Pool } from "@neondatabase/serverless";
+import * as schema from "@/lib/schema";
 const handler = async (inputData: InputType): Promise<ReturnType> => {
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const dbInstance = drizzle(pool, { schema });
   const { userId, orgId } = auth();
   //auth
   if (!userId || !orgId) {
@@ -41,9 +45,8 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
     });
     const newPosition = lastList ? lastList.position + 1 : 1;
 
-    // TO DO : FIND A WAY TO USE TRANSACTIONS
     //COPY LIST AND CARDS AS ONE SINGLE OPERATION
-    /* await db.transaction(
+    await dbInstance.transaction(
       async (tx) => {
         const newList = await tx
           .insert(list)
@@ -59,7 +62,9 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
           listId: newList[0].id,
           position: card.position,
         }));
-        await tx.insert(card).values([...cards]);
+        if (cards.length > 0) {
+          await tx.insert(card).values([...cards]);
+        }
         List = newList[0];
       },
       {
@@ -67,26 +72,7 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
         accessMode: "read write",
         deferrable: true,
       }
-    );*/
-    const newList = await db
-      .insert(list)
-      .values({
-        title: `${listToCopy.title}-Copy`,
-        position: newPosition,
-        boardId: listToCopy.boardId,
-      })
-      .returning();
-    const cards = listToCopy.card.map((card) => ({
-      title: card.title,
-      description: card.description,
-      listId: newList[0].id,
-      position: card.position,
-    }));
-    if (cards.length > 0) {
-      await db.insert(card).values(cards);
-    }
-
-    List = newList[0];
+    );
   } catch (error) {
     return {
       error: "Something went wrong unable to copy the list",
