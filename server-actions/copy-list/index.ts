@@ -7,12 +7,7 @@ import { eq, and, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { CopyListSchema } from "./zod-schema";
 import { card, list } from "@/lib/schema";
-interface cardProps {
-  title: string;
-  description: string | null;
-  listId: string;
-  position: number;
-}
+
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
   //auth
