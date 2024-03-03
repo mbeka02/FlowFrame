@@ -7,7 +7,6 @@ import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { DeleteListSchema } from "./zod-schema";
 import { list } from "@/lib/schema";
-import { redirect } from "next/navigation";
 
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
