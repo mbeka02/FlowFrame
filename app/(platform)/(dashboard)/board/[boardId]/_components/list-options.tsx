@@ -30,7 +30,11 @@ export const ListOptions = ({ val, onAddCard }: ListOptionsProps) => {
 
   const { exec: execCopy } = useAction(copyList, {
     onSuccess(data) {
-      console.log(data);
+      toast.success(` ${data.title} has been copied`);
+      closeRef.current?.click();
+    },
+    onError(error) {
+      toast.error(error);
     },
   });
 
