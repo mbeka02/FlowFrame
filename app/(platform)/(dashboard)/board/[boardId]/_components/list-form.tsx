@@ -72,7 +72,7 @@ export const ListForm = ({ boardId }: { boardId: string }) => {
           />
           <input className="hidden" value={boardId} name="boardId" />
           <div className="flex items-center gap-x-1">
-            <FormButton variant="amber">add</FormButton>
+            <FormButton variant="amber">Add</FormButton>
             <Button
               onClick={disableEditing}
               size="sm"

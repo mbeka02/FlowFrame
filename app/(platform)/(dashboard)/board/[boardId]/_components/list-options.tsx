@@ -23,6 +23,9 @@ interface ListOptionsProps {
 export const ListOptions = ({ val, onAddCard }: ListOptionsProps) => {
   const closeRef = useRef<ElementRef<"button">>(null);
   const { exec: execDelete, isLoading } = useAction(deleteList, {
+    onSuccess(data) {
+      toast.success(`${data.title} has been deleted`);
+    },
     onError(error) {
       toast.error(error);
     },

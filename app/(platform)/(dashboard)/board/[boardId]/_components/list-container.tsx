@@ -17,7 +17,7 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
   }, [data]);
   return (
     <div>
-      <ol className="flex h-full gap-x-3">
+      <ol className="flex h-full gap-x-3 flex-wrap">
         {listData.map((val, index) => {
           return <ListItem key={val.id} index={index} val={val} />;
         })}

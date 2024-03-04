@@ -24,6 +24,8 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
     const { exec, fieldErrors } = useAction(createCard, {
       onSuccess(data) {
         toast.success(`${data.title} has been created`);
+        formRef.current?.reset();
+        disableEditing();
       },
       onError(error) {
         toast.error(error);

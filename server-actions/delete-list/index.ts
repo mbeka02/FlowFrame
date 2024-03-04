@@ -17,18 +17,19 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
     };
   }
   const { id, boardId } = inputData;
-
+  let deletedList;
   try {
-    await db
+    deletedList = await db
       .delete(list)
-      .where(and(eq(list.id, id), eq(list.boardId, boardId)));
+      .where(and(eq(list.id, id), eq(list.boardId, boardId)))
+      .returning();
   } catch (error) {
     return {
       error: "Something went wrong unable to delete the list",
     };
   }
   revalidatePath(`/board/${boardId}`);
-  return {};
+  return { data: deletedList[0] };
   //redirect(`/board/${boardId}`);
 };
 
