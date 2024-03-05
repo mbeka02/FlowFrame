@@ -69,7 +69,7 @@ const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
           />
           <input hidden id="listId" name="listId" defaultValue={listId} />
           <div className="flex items-center gap-x-1">
-            <FormButton>Add card</FormButton>
+            <FormButton variant="amber">Add card</FormButton>
             <Button
               size="sm"
               variant="ghost"

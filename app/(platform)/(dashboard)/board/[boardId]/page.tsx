@@ -25,7 +25,7 @@ export default async function Page({
   });
 
   return (
-    <div>
+    <div className="overflow-x-auto p-4 h-full">
       <ListContainer boardId={params.boardId} data={lists} />
     </div>
   );

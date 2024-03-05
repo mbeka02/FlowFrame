@@ -26,7 +26,7 @@ export const ListItem = ({ index, val }: ListItemProps) => {
   };
 
   return (
-    <li className="shrink-0 w-[272px] select-none h-full">
+    <li className="shrink-0 w-[272px] select-none h-full my-2">
       <div className="w-full rounded-md shadow-md pb-2  bg-[#f1f2f4]">
         <ListHeader onAddCard={enableEditing} val={val} />
         <ol
