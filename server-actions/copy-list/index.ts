@@ -8,11 +8,12 @@ import { revalidatePath } from "next/cache";
 import { CopyListSchema } from "./zod-schema";
 import { card, list } from "@/lib/schema";
 import { drizzle } from "drizzle-orm/neon-serverless";
-import { Pool } from "@neondatabase/serverless";
+import { Client } from "@neondatabase/serverless";
 import * as schema from "@/lib/schema";
 const handler = async (inputData: InputType): Promise<ReturnType> => {
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  const dbInstance = drizzle(pool, { schema });
+  const client = new Client(process.env.DATABASE_URL);
+  await client.connect();
+  const dbInstance = drizzle(client, { schema });
   const { userId, orgId } = auth();
   //auth
   if (!userId || !orgId) {
