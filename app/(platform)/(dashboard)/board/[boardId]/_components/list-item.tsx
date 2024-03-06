@@ -5,7 +5,7 @@ import { ElementRef, useRef, useState } from "react";
 import { CardForm } from "./card-form";
 import { cn } from "@/lib/utils";
 import { CardItem } from "./card-item";
-
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 interface ListItemProps {
   index: number;
   val: ListWithCards;
@@ -26,27 +26,45 @@ export const ListItem = ({ index, val }: ListItemProps) => {
   };
 
   return (
-    <li className="shrink-0 w-[272px] select-none h-full my-2">
-      <div className="w-full rounded-md shadow-md pb-2  bg-[#f1f2f4]">
-        <ListHeader onAddCard={enableEditing} val={val} />
-        <ol
-          className={cn(
-            "mx-1 flex flex-col gap-y-2 px-1 py-0.5",
-            val.card.length > 0 ? "mt-2" : "mt-0"
-          )}
+    <Draggable draggableId={val.id} index={index}>
+      {(provided) => (
+        <li
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+          className="shrink-0 w-[272px] select-none h-full my-2"
         >
-          {val.card.map((v, i) => (
-            <CardItem key={v.id} index={index} data={v} />
-          ))}
-        </ol>
-        <CardForm
-          isEditing={isEditing}
-          disableEditing={disableEditing}
-          enableEditing={enableEditing}
-          listId={val.id}
-          ref={textAreaRef}
-        />
-      </div>
-    </li>
+          <div
+            {...provided.dragHandleProps}
+            className="w-full rounded-md shadow-md pb-2  bg-[#f1f2f4]"
+          >
+            <ListHeader onAddCard={enableEditing} val={val} />
+            <Droppable droppableId={val.id} type="card">
+              {(provided) => (
+                <ol
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={cn(
+                    "mx-1 flex flex-col gap-y-2 px-1 py-0.5",
+                    val.card.length > 0 ? "mt-2" : "mt-0"
+                  )}
+                >
+                  {val.card.map((v, i) => (
+                    <CardItem key={v.id} i={i} data={v} />
+                  ))}
+                  {provided.placeholder}
+                </ol>
+              )}
+            </Droppable>
+            <CardForm
+              isEditing={isEditing}
+              disableEditing={disableEditing}
+              enableEditing={enableEditing}
+              listId={val.id}
+              ref={textAreaRef}
+            />
+          </div>
+        </li>
+      )}
+    </Draggable>
   );
 };
