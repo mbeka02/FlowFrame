@@ -8,6 +8,7 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { useAction } from "@/hooks/use-action";
 import { updateListPosition } from "@/server-actions/update-list-position";
 import { toast } from "sonner";
+import { updateCardPosition } from "@/server-actions/update-card-position";
 interface ListContainerProps {
   boardId: string;
   data: ListWithCards[];
@@ -16,7 +17,16 @@ interface ListContainerProps {
 export const ListContainer = ({ boardId, data }: ListContainerProps) => {
   const [listData, setListData] = useState(data);
 
-  const { exec: updateList } = useAction(updateListPosition, {
+  useEffect(() => {
+    setListData(data);
+  }, [data]);
+
+  const { exec: updateLists } = useAction(updateListPosition, {
+    onError(error) {
+      toast.error(error);
+    },
+  });
+  const { exec: updateCards } = useAction(updateCardPosition, {
     onError(error) {
       toast.error(error);
     },
@@ -44,7 +54,6 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
     }
     //if a list is being moved.
     if (type === "list") {
-      console.log("list");
       const reorderedData = reorder(
         listData,
         source.index,
@@ -55,7 +64,7 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
       );
       setListData(reorderedData);
       //EXECUTE SERVER ACTION
-      updateList({ items: reorderedData, boardId });
+      updateLists({ items: reorderedData, boardId });
     }
     //if a card is being moved.
     if (type === "card") {
@@ -93,6 +102,7 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
         });
         sourceList.card = reorderedCards;
         setListData(listDataCopy);
+        updateCards({ items: reorderedCards, boardId: boardId });
       } else {
         //if the card is moved to a new list
         //remove card from the src list
@@ -111,13 +121,11 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
           card.position = index;
         });
         setListData(listDataCopy);
+        updateCards({ items: destinationList.card, boardId: boardId });
       }
     }
   };
 
-  useEffect(() => {
-    setListData(data);
-  }, [data]);
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="lists" type="list" direction="horizontal">

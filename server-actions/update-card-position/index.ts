@@ -5,8 +5,8 @@ import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
 import { eq, and, SQL, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { UpdateListPositionSchema } from "./zod-schema";
-import { list } from "@/lib/schema";
+import { UpdateCardPositionSchema } from "./zod-schema";
+import { list, card } from "@/lib/schema";
 
 import { inArray } from "drizzle-orm";
 
@@ -40,9 +40,9 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
     const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
 
     await db
-      .update(list)
+      .update(card)
       .set({ position: finalSql })
-      .where(and(inArray(list.id, ids), eq(list.boardId, boardId)));
+      .where(inArray(card.id, ids));
 
     /* items.map((item) =>
       db
@@ -53,14 +53,14 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
   } catch (error) {
     console.log(error);
     return {
-      error: "Something went wrong unable to update the list positions",
+      error: "Something went wrong unable to update the card positions",
     };
   }
   revalidatePath(`/board/${boardId}`);
   return {};
 };
 
-export const updateListPosition = createSafeAction(
-  UpdateListPositionSchema,
+export const updateCardPosition = createSafeAction(
+  UpdateCardPositionSchema,
   handler
 );

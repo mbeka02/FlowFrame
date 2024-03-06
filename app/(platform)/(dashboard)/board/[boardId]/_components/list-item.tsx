@@ -48,8 +48,8 @@ export const ListItem = ({ index, val }: ListItemProps) => {
                     val.card.length > 0 ? "mt-2" : "mt-0"
                   )}
                 >
-                  {val.card.map((v, i) => (
-                    <CardItem key={v.id} i={i} data={v} />
+                  {val.card.map((v, index) => (
+                    <CardItem key={v.id} index={index} data={v} />
                   ))}
                   {provided.placeholder}
                 </ol>

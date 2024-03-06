@@ -4,13 +4,13 @@ import { NewCard } from "@/lib/schema";
 import { Draggable } from "@hello-pangea/dnd";
 
 interface CardItemProps {
-  i: number; //index
+  index: number; //index
   data: NewCard;
 }
 
-export const CardItem = ({ i, data }: CardItemProps) => {
+export const CardItem = ({ index, data }: CardItemProps) => {
   return (
-    <Draggable draggableId={data.id} index={i}>
+    <Draggable draggableId={data.id} index={index}>
       {(provided) => (
         <div
           {...provided.draggableProps}

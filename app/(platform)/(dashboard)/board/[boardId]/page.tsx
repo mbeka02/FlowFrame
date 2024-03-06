@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
-import { list } from "@/lib/schema";
+import { list, card } from "@/lib/schema";
 import { asc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { ListContainer } from "./_components/list-container";
@@ -19,7 +19,9 @@ export default async function Page({
     where: eq(list.boardId, params.boardId),
 
     with: {
-      card: true,
+      card: {
+        orderBy: [asc(card.position)],
+      },
     },
     orderBy: [asc(list.position)],
   });
