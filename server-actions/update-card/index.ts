@@ -3,10 +3,10 @@ import { createSafeAction } from "@/utilities/create-safe-action";
 import { InputType, ReturnType } from "./types";
 import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { UpdateListSchema } from "./zod-schema";
-import { list } from "@/lib/schema";
+import { UpdateCardSchema } from "./zod-schema";
+import { card } from "@/lib/schema";
 
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -16,21 +16,22 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       error: "unauthorized",
     };
   }
-  const { title, id, boardId } = inputData;
-  let updatedList;
+  const { id, boardId, ...values } = inputData;
+  let updatedCard;
   try {
-    updatedList = await db
-      .update(list)
-      .set({ title: title })
-      .where(and(eq(list.id, id), eq(list.boardId, boardId)))
+    updatedCard = await db
+      .update(card)
+      .set({ ...values })
+      .where(eq(card.id, id))
       .returning();
   } catch (error) {
+    console.log(error);
     return {
-      error: "Something went wrong unable to update the list title",
+      error: "Something went wrong unable to update the card ",
     };
   }
   revalidatePath(`/board/${boardId}`);
-  return { data: updatedList[0] };
+  return { data: updatedCard[0] };
 };
 
-export const updateList = createSafeAction(UpdateListSchema, handler);
+export const updateCard = createSafeAction(UpdateCardSchema, handler);

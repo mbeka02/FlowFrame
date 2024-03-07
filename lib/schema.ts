@@ -76,3 +76,4 @@ export type NewList = typeof list.$inferSelect;
 export type NewCard = typeof card.$inferSelect;
 
 export type ListWithCards = NewList & { card: NewCard[] };
+export type CardWithList = NewCard & { list: NewList };
