@@ -57,7 +57,7 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
     });
   } catch (error) {
     return {
-      error: "something went wrong , unable to create the list",
+      error: "something went wrong , unable to create the card",
     };
   }
   revalidatePath(`/board/${boardId}`);

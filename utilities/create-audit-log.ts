@@ -1,5 +1,4 @@
 import { auth, currentUser } from "@clerk/nextjs";
-import {} from "@/lib/schema";
 import { db } from "@/lib/db";
 import { auditLog } from "@/lib/schema";
 
@@ -27,10 +26,10 @@ export async function createAuditLog(props: Props) {
     const { entityId, entityTitle, entityType, action } = props;
     await db.insert(auditLog).values({
       organizationId: orgId,
-      action,
-      entityId,
-      entityType,
-      entityTitle,
+      action: action,
+      entityId: entityId,
+      entityType: entityType,
+      entityTitle: entityTitle,
       userId: user.id,
       userImage: user.imageUrl,
       userName: user.firstName + " " + user.lastName,

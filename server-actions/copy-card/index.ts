@@ -7,6 +7,7 @@ import { eq, and, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { CopyCardSchema } from "./zod-schema";
 import { card } from "@/lib/schema";
+import { createAuditLog } from "@/utilities/create-audit-log";
 
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -46,6 +47,13 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
         description: cardToCopy.description,
       })
       .returning();
+
+    await createAuditLog({
+      action: "CREATE",
+      entityType: "CARD",
+      entityTitle: Card[0].title,
+      entityId: Card[0].id,
+    });
   } catch (error) {
     return {
       error: "Something went wrong unable to duplicate this card",

@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import { DeleteBoardSchema } from "./zod-schema";
 import { board } from "@/lib/schema";
 import { redirect } from "next/navigation";
+import { createAuditLog } from "@/utilities/create-audit-log";
 
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -20,7 +21,16 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { id } = inputData;
 
   try {
-    await db.delete(board).where(and(eq(board.id, id), eq(board.orgId, orgId)));
+    const deletedBoard = await db
+      .delete(board)
+      .where(and(eq(board.id, id), eq(board.orgId, orgId)))
+      .returning();
+    await createAuditLog({
+      action: "DELETE",
+      entityType: "BOARD",
+      entityTitle: deletedBoard[0].title,
+      entityId: deletedBoard[0].id,
+    });
   } catch (error) {
     return {
       error: "Something went wrong unable to delete the board ",

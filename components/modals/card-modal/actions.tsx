@@ -12,14 +12,18 @@ import { useParams } from "next/navigation";
 import { deleteCard } from "@/server-actions/delete-card";
 
 import { useCardModal } from "@/hooks/use-card-modal";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Actions = ({ data }: { data: CardWithList }) => {
   const params = useParams();
   const cardModal = useCardModal();
+  const queryClient = useQueryClient();
   const { exec: execCopy, isLoading: copyLoading } = useAction(copyCard, {
     onSuccess() {
       toast.success(`copied ${data.title}`);
-      cardModal.onClose();
+      queryClient.invalidateQueries({
+        queryKey: ["card-logs", data.id],
+      });
     },
     onError(error) {
       toast.error(error);

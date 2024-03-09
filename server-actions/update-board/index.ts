@@ -7,6 +7,7 @@ import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { UpdateBoardSchema } from "./zod-schema";
 import { board } from "@/lib/schema";
+import { createAuditLog } from "@/utilities/create-audit-log";
 
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -24,9 +25,15 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       .set({ title: title })
       .where(and(eq(board.id, id), eq(board.orgId, orgId)))
       .returning();
+    await createAuditLog({
+      action: "UPDATE",
+      entityType: "BOARD",
+      entityTitle: updatedBoard[0].title,
+      entityId: updatedBoard[0].id,
+    });
   } catch (error) {
     return {
-      error: "Something went wrong unable to update the board title",
+      error: "Something went wrong unable to update the board ",
     };
   }
   revalidatePath(`/board/${updatedBoard[0].id}`);

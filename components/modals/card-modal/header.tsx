@@ -21,6 +21,10 @@ export const Header = ({ data }: { data: CardWithList }) => {
       queryClient.invalidateQueries({
         queryKey: ["card", data.id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["card-logs", data.id],
+      });
+
       toast.success(`changed title to ${data.title}`);
       setTitle(data.title);
     },

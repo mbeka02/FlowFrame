@@ -6,6 +6,7 @@ import { board } from "@/lib/schema";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/utilities/create-safe-action";
 import { CreateBoardSchema } from "./zod-schema";
+import { createAuditLog } from "@/utilities/create-audit-log";
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
   //auth
@@ -44,6 +45,13 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
         imageUserName: imageUserName,
       })
       .returning();
+
+    await createAuditLog({
+      action: "CREATE",
+      entityType: "BOARD",
+      entityTitle: newBoard[0].title,
+      entityId: newBoard[0].id,
+    });
   } catch (error) {
     return {
       error: "something went wrong , unable to create the Board",

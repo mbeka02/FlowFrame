@@ -7,6 +7,7 @@ import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { DeleteListSchema } from "./zod-schema";
 import { list } from "@/lib/schema";
+import { createAuditLog } from "@/utilities/create-audit-log";
 
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -23,6 +24,12 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       .delete(list)
       .where(and(eq(list.id, id), eq(list.boardId, boardId)))
       .returning();
+    await createAuditLog({
+      action: "DELETE",
+      entityType: "LIST",
+      entityTitle: deletedList[0].title,
+      entityId: deletedList[0].id,
+    });
   } catch (error) {
     return {
       error: "Something went wrong unable to delete the list",

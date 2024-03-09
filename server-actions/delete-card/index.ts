@@ -7,7 +7,7 @@ import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { DeleteCardSchema } from "./zod-schema";
 import { card } from "@/lib/schema";
-
+import { createAuditLog } from "@/utilities/create-audit-log";
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
   //auth
@@ -23,6 +23,12 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       .delete(card)
       .where(and(eq(card.id, id), eq(card.listId, listId)))
       .returning();
+    await createAuditLog({
+      action: "DELETE",
+      entityType: "CARD",
+      entityTitle: Card[0].title,
+      entityId: Card[0].id,
+    });
   } catch (error) {
     return {
       error: "unable to delete this card",
