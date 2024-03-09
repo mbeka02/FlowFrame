@@ -6,7 +6,12 @@ import {
   timestamp,
   varchar,
   integer,
+  pgEnum,
 } from "drizzle-orm/pg-core";
+
+export const actionEnum = pgEnum("ACTION", ["CREATE", "UPDATE", "DELETE"]);
+
+export const entityEnum = pgEnum("ENTITY_TYPE", ["BOARD", "LIST", "CARD"]);
 
 export const board = pgTable("board", {
   id: uuid("id")
@@ -36,6 +41,21 @@ export const list = pgTable("list", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const auditLog = pgTable("audit_log", {
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  organizationId: text("organization_id").notNull(),
+  action: actionEnum("action").notNull(),
+  entityId: text("entity_id").notNull(),
+  entityType: entityEnum("entity_type").notNull(),
+  entityTitle: varchar("entity_title", { length: 256 }).notNull(),
+  userId: uuid("user_id").notNull(),
+  userImage: text("user_image"),
+  userName: text("user_name"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
 export const card = pgTable("card", {
   id: uuid("id")
     .primaryKey()
@@ -49,6 +69,7 @@ export const card = pgTable("card", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
 export const boardToListRelations = relations(board, ({ many }) => ({
   list: many(list),
 }));
@@ -74,6 +95,6 @@ export const cardToListRelations = relations(card, ({ one }) => ({
 export type NewBoard = typeof board.$inferSelect;
 export type NewList = typeof list.$inferSelect;
 export type NewCard = typeof card.$inferSelect;
-
+export type NewAuditLog = typeof auditLog.$inferSelect;
 export type ListWithCards = NewList & { card: NewCard[] };
 export type CardWithList = NewCard & { list: NewList };

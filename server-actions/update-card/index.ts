@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { UpdateCardSchema } from "./zod-schema";
 import { card } from "@/lib/schema";
+import { createAuditLog } from "@/utilities/create-audit-log";
 
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -24,6 +25,13 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       .set({ ...values })
       .where(eq(card.id, id))
       .returning();
+
+    await createAuditLog({
+      action: "UPDATE",
+      entityType: "CARD",
+      entityTitle: updatedCard[0].title,
+      entityId: updatedCard[0].id,
+    });
   } catch (error) {
     console.log(error);
     return {

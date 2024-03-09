@@ -15,6 +15,13 @@
       "when": 1709130439742,
       "tag": "0001_dark_wildside",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1709973830410,
+      "tag": "0002_familiar_nightmare",
+      "breakpoints": true
     }
   ]
 }

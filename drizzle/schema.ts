@@ -1,6 +1,8 @@
-import { pgTable, foreignKey, uuid, varchar, integer, timestamp, text } from "drizzle-orm/pg-core"
+import { pgTable, foreignKey, pgEnum, uuid, varchar, integer, timestamp, text } from "drizzle-orm/pg-core"
   import { sql } from "drizzle-orm"
 
+export const action = pgEnum("ACTION", ['DELETE', 'UPDATE', 'CREATE'])
+export const entityType = pgEnum("ENTITY_TYPE", ['CARD', 'LIST', 'BOARD'])
 
 
 export const list = pgTable("list", {
@@ -33,4 +35,17 @@ export const card = pgTable("card", {
 	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
 	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
 	position: integer("position").notNull(),
+});
+
+export const auditLog = pgTable("audit_log", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	organizationId: text("organization_id").notNull(),
+	action: action("action").notNull(),
+	entityId: text("entity_id").notNull(),
+	entityType: entityType("entity_type").notNull(),
+	userId: uuid("user_id").notNull(),
+	userImage: text("user_image"),
+	userName: text("user_name"),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
 });

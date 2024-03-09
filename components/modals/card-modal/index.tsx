@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCardModal } from "@/hooks/use-card-modal";
-import { CardWithList } from "@/lib/schema";
+import { CardWithList, NewAuditLog } from "@/lib/schema";
 import { fetcher } from "@/utilities/fetcher";
 
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +18,11 @@ export const CardModal = () => {
     queryKey: ["card", id],
     queryFn: () => fetcher(`/api/cards/${id}`),
   });
+  const { data: auditLogsData } = useQuery<NewAuditLog[]>({
+    queryKey: ["card-logs", id],
+    queryFn: () => fetcher(`/api/cards/${id}/logs`),
+  });
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>

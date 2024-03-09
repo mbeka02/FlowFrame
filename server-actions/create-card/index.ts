@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/utilities/create-safe-action";
 import { CreateCardSchema } from "./zod-schema";
 import { and, desc, eq } from "drizzle-orm";
+import { createAuditLog } from "@/utilities/create-audit-log";
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
   //auth
@@ -47,6 +48,13 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
         listId: listId,
       })
       .returning();
+
+    await createAuditLog({
+      action: "CREATE",
+      entityType: "CARD",
+      entityTitle: newCard[0].title,
+      entityId: newCard[0].id,
+    });
   } catch (error) {
     return {
       error: "something went wrong , unable to create the list",
