@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1709125912826,
-      "tag": "0000_smooth_beast",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1709130439742,
-      "tag": "0001_dark_wildside",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1709973830410,
-      "tag": "0002_familiar_nightmare",
+      "when": 1710072934241,
+      "tag": "0000_lovely_adam_warlock",
       "breakpoints": true
     }
   ]

@@ -70,6 +70,16 @@ export const card = pgTable("card", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const orgLimit = pgTable("org_limit", {
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  organizationId: text("organization_id").notNull().unique(),
+  count: integer("count").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const boardToListRelations = relations(board, ({ many }) => ({
   list: many(list),
 }));
