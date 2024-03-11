@@ -19,7 +19,7 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
     };
   }
   const { items, boardId } = inputData;
-
+  let updatedLists;
   try {
     if (items.length === 0) {
       return {
@@ -39,17 +39,11 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
 
     const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
 
-    await db
+    updatedLists = await db
       .update(list)
       .set({ position: finalSql })
-      .where(and(inArray(list.id, ids), eq(list.boardId, boardId)));
-
-    /* items.map((item) =>
-      db
-        .update(list)
-        .set({ position: item.position })
-        .where(and(eq(list.id, id), eq(list.boardId, boardId)))
-    );*/
+      .where(and(inArray(list.id, ids), eq(list.boardId, boardId)))
+      .returning();
   } catch (error) {
     console.log(error);
     return {
@@ -57,7 +51,7 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
     };
   }
   revalidatePath(`/board/${boardId}`);
-  return {};
+  return { data: updatedLists };
 };
 
 export const updateListPosition = createSafeAction(

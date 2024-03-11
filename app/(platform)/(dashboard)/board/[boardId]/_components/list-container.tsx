@@ -22,13 +22,16 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
   }, [data]);
 
   const { exec: updateLists } = useAction(updateListPosition, {
+    onSuccess() {
+      toast.success("lists reordered");
+    },
     onError(error) {
       toast.error(error);
     },
   });
   const { exec: updateCards } = useAction(updateCardPosition, {
     onSuccess() {
-      toast.success("card reordered");
+      toast.success("cards reordered");
     },
     onError(error) {
       toast.error(error);
