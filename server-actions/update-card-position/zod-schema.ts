@@ -12,4 +12,5 @@ export const UpdateCardPositionSchema = z.object({
   ),
 
   boardId: z.string(),
+  listId: z.string(),
 });

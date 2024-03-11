@@ -3,10 +3,10 @@ import { createSafeAction } from "@/utilities/create-safe-action";
 import { InputType, ReturnType } from "./types";
 import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
-import { eq, and, SQL, sql } from "drizzle-orm";
+import { SQL, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { UpdateCardPositionSchema } from "./zod-schema";
-import { list, card } from "@/lib/schema";
+import { card } from "@/lib/schema";
 
 import { inArray } from "drizzle-orm";
 
@@ -18,7 +18,8 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       error: "unauthorized",
     };
   }
-  const { items, boardId } = inputData;
+  const { items, boardId, listId } = inputData;
+  let updatedCards;
 
   try {
     if (items.length === 0) {
@@ -39,10 +40,11 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
 
     const finalSql: SQL = sql.join(sqlChunks, sql.raw(" "));
 
-    await db
+    updatedCards = await db
       .update(card)
-      .set({ position: finalSql })
-      .where(inArray(card.id, ids));
+      .set({ position: finalSql, listId: listId })
+      .where(inArray(card.id, ids))
+      .returning();
 
     /* items.map((item) =>
       db
@@ -57,7 +59,7 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
     };
   }
   revalidatePath(`/board/${boardId}`);
-  return {};
+  return { data: updatedCards };
 };
 
 export const updateCardPosition = createSafeAction(

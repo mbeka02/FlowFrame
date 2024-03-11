@@ -27,6 +27,9 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
     },
   });
   const { exec: updateCards } = useAction(updateCardPosition, {
+    onSuccess() {
+      toast.success("card reordered");
+    },
     onError(error) {
       toast.error(error);
     },
@@ -102,7 +105,11 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
         });
         sourceList.card = reorderedCards;
         setListData(listDataCopy);
-        updateCards({ items: reorderedCards, boardId: boardId });
+        updateCards({
+          items: reorderedCards,
+          boardId: boardId,
+          listId: sourceList.id,
+        });
       } else {
         //if the card is moved to a new list
         //remove card from the src list
@@ -110,6 +117,7 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
 
         //assign the the destination list id to the removed card
         removedCard.listId = destination.droppableId;
+
         //Add the card to the destination list
         destinationList.card.splice(destination.index, 0, removedCard);
         //assign the correct position in the source list
@@ -120,8 +128,14 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
         destinationList.card.forEach((card, index) => {
           card.position = index;
         });
+
         setListData(listDataCopy);
-        updateCards({ items: destinationList.card, boardId: boardId });
+
+        updateCards({
+          items: destinationList.card,
+          boardId: boardId,
+          listId: destinationList.id,
+        });
       }
     }
   };
