@@ -8,6 +8,8 @@ import { db } from "@/lib/db";
 import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getAvailableCount } from "@/utilities/org-limit";
+import { BOARDS_LIMIT } from "@/constants/boards";
 
 const BoardList = async () => {
   const { orgId } = auth();
@@ -19,6 +21,8 @@ const BoardList = async () => {
     .from(board)
     .where(eq(board.orgId, orgId))
     .orderBy(desc(board.createdAt));
+
+  const availableCount = await getAvailableCount();
   return (
     <div className="space-y-4">
       <div className=" flex items-center font-semibold text-neutral-900  text-lg">
@@ -32,7 +36,9 @@ const BoardList = async () => {
             role="button"
           >
             <p className="text-sm">Create New Board</p>
-            <span className="text-sm  text-neutral-500">8 Remaining</span>
+            <span className="text-sm  text-neutral-500">
+              {BOARDS_LIMIT - availableCount} Remaining
+            </span>
             <Hint
               sideOffset={40}
               description={`Free workspaces can have upto 8 free boards , upgrade your workspace for unlimited boards`}

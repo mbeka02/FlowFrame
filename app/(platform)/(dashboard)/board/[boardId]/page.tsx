@@ -12,6 +12,7 @@ export default async function Page({
     boardId: string;
   };
 }) {
+  
   const { orgId } = auth();
   if (!orgId) redirect("/org-select");
 

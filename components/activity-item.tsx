@@ -5,6 +5,8 @@ import { generateLogMessage } from "@/utilities/generate-log-message";
 import { Avatar, AvatarImage } from "./ui/avatar";
 
 export const ActivityItem = ({ item }: { item: NewAuditLog }) => {
+  
+
   return (
     <li className="flex items-center gap-x-2">
       <Avatar className="h-8 w-8">
