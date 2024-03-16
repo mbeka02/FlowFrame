@@ -9,7 +9,7 @@ import { DeleteBoardSchema } from "./zod-schema";
 import { board } from "@/lib/schema";
 import { redirect } from "next/navigation";
 import { createAuditLog } from "@/utilities/create-audit-log";
-
+import { decrementBoardCount } from "@/utilities/org-limit";
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
   //auth
@@ -25,15 +25,17 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       .delete(board)
       .where(and(eq(board.id, id), eq(board.orgId, orgId)))
       .returning();
+
     await createAuditLog({
       action: "DELETE",
       entityType: "BOARD",
       entityTitle: deletedBoard[0].title,
       entityId: deletedBoard[0].id,
     });
+    await decrementBoardCount();
   } catch (error) {
     return {
-      error: "Something went wrong unable to delete the board ",
+      error: "Unable to delete this board ",
     };
   }
   revalidatePath(`/organization/${orgId}`);

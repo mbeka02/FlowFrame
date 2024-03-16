@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/utilities/create-safe-action";
 import { CreateBoardSchema } from "./zod-schema";
 import { createAuditLog } from "@/utilities/create-audit-log";
+import { incrementBoardCount, hasExceededLimit } from "@/utilities/org-limit";
 const handler = async (inputData: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
   //auth
@@ -15,6 +16,15 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       error: "unauthorized",
     };
   }
+
+  const underTierLimit = await hasExceededLimit();
+  if (!underTierLimit) {
+    return {
+      error:
+        "You have exceeded the limits for this organization , upgrade your plan.",
+    };
+  }
+
   const { title, image } = inputData;
   const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName] =
     image.split("|");
@@ -52,6 +62,8 @@ const handler = async (inputData: InputType): Promise<ReturnType> => {
       entityTitle: newBoard[0].title,
       entityId: newBoard[0].id,
     });
+
+    await incrementBoardCount();
   } catch (error) {
     return {
       error: "something went wrong , unable to create the Board",
