@@ -80,6 +80,15 @@ export const orgLimit = pgTable("org_limit", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const orgSubscription = pgTable("org_subscription", {
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid`),
+  organizationId: text("organization_id").notNull().unique(),
+  // paystackCustomerId:text("paystack_customer_id").unique(),
+  //paystackSubscriptionId:text("paystack_subscription_id").unique(),
+});
+
 export const boardToListRelations = relations(board, ({ many }) => ({
   list: many(list),
 }));
