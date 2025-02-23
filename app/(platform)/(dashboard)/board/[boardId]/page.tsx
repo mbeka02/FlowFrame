@@ -28,7 +28,7 @@ export default async function Page({
   });
 
   return (
-    <div className="overflow-x-auto p-4 h-full">
+    <div className="overflow-x-auto p-4 h-full flex flex-wrap justify-space-evenly">
       <ListContainer boardId={params.boardId} data={lists} />
     </div>
   );
