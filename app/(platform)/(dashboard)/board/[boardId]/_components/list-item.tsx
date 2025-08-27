@@ -31,7 +31,7 @@ export const ListItem = ({ index, val }: ListItemProps) => {
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="shrink-0 w-[272px] select-none h-full my-2"
+          className="shrink-0 w-[272px] select-none h-full m-4"
         >
           <div
             {...provided.dragHandleProps}
@@ -45,7 +45,7 @@ export const ListItem = ({ index, val }: ListItemProps) => {
                   {...provided.droppableProps}
                   className={cn(
                     "mx-1 flex flex-col gap-y-2 px-1 py-0.5",
-                    val.card.length > 0 ? "mt-2" : "mt-0"
+                    val.card.length > 0 ? "mt-2" : "mt-0",
                   )}
                 >
                   {val.card.map((v, index) => (

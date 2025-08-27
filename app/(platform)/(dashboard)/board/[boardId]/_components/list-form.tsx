@@ -90,7 +90,7 @@ export const ListForm = ({ boardId }: { boardId: string }) => {
     <ListWrapper>
       <button
         onClick={enableEditing}
-        className="w-full py-3.5 my-2  rounded-md bg-white/80 hover:bg-white/50  transition p-3 flex items-center font-medium text-sm"
+        className="w-full py-3.5 m-4  rounded-md bg-white/80 hover:bg-white/50  transition p-3 flex items-center font-medium text-sm"
       >
         <Plus />
         Add a list
