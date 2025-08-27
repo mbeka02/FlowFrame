@@ -12,7 +12,6 @@ export default async function Page({
     boardId: string;
   };
 }) {
-  
   const { orgId } = auth();
   if (!orgId) redirect("/org-select");
 
@@ -28,7 +27,7 @@ export default async function Page({
   });
 
   return (
-    <div className="overflow-x-auto p-4 h-full flex flex-wrap justify-space-evenly">
+    <div className="overflow-x-auto p-4 h-full">
       <ListContainer boardId={params.boardId} data={lists} />
     </div>
   );

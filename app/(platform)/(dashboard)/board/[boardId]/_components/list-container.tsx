@@ -63,10 +63,10 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
       const reorderedData = reorder(
         listData,
         source.index,
-        destination.index
+        destination.index,
       ).map(
         //change to  new positions
-        (item, index) => ({ ...item, position: index })
+        (item, index) => ({ ...item, position: index }),
       );
       setListData(reorderedData);
       //EXECUTE SERVER ACTION
@@ -78,10 +78,10 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
 
       //find source and destination list
       const sourceList = listDataCopy.find(
-        (list) => list.id === source.droppableId
+        (list) => list.id === source.droppableId,
       );
       const destinationList = listDataCopy.find(
-        (list) => list.id === destination.droppableId
+        (list) => list.id === destination.droppableId,
       );
 
       if (!sourceList || !destinationList) {
@@ -100,7 +100,7 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
         const reorderedCards = reorder(
           sourceList.card,
           source.index,
-          destination.index
+          destination.index,
         );
         //assign correct position
         reorderedCards.forEach((card, index) => {
@@ -151,7 +151,7 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
             {...provided.droppableProps}
             //draggable requires a HTMLElement
             ref={provided.innerRef}
-            className="flex h-full flex-col md:flex-row  md:items-start items-center  md:justify-between flex-wrap "
+            className="flex md:h-full flex-col md:flex-row  md:items-start items-center  md:justify-between md:flex-wrap "
           >
             {listData.map((val, index) => {
               return <ListItem key={val.id} index={index} val={val} />;
